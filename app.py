@@ -53,20 +53,20 @@ str_lit.markdown("""
 # ==========================================
 MASTER_ITEMS = [
     {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "image_url": "images/cybercore.jpg", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
-    {"id": "item_02", "name": "偽りの聖剣アロンダイト", "category": "ファンタジー武器", "apparent_value": 600, "true_value": 50, "is_cursed": False, "image_url": "https://picsum.photos/seed/fake_sword/400/300", "description": "神々しい輝きを放つが、実は精巧に作られた鍍金メッキのレプリカ。"},
-    {"id": "item_03", "name": "呪われたニューラル・バイザー", "category": "不法サイバーパーツ", "apparent_value": 450, "true_value": 100, "is_cursed": True, "image_url": "https://picsum.photos/seed/cursed_visor/400/300", "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"},
-    {"id": "item_04", "name": "竜血の錬金薬瓶", "category": "魔法遺物", "apparent_value": 200, "true_value": 700, "is_cursed": False, "image_url": "https://picsum.photos/seed/dragon_potion/400/300", "description": "ドロリとした怪しい液体。伝説の古龍の血だと証言されている。"},
-    {"id": "item_05", "name": "錆びついたAIメモリ端末", "category": "サイバー遺物", "apparent_value": 100, "true_value": 1200, "is_cursed": False, "image_url": "https://picsum.photos/seed/rusty_ai/400/300", "description": "一見ただのジャンク品。だが内部には旧時代の暗号通貨キーが眠る。"},
-    {"id": "item_06", "name": "死霊術師のクロノグラフ", "category": "呪物", "apparent_value": 500, "true_value": 900, "is_cursed": True, "image_url": "https://picsum.photos/seed/necromancer_watch/400/300", "description": "針が逆回転する怪しい懐中時計。強力な時間魔術の触媒。"},
-    {"id": "item_07", "name": "星詠みの水晶ドローン", "category": "サイバーファンタジー", "apparent_value": 400, "true_value": 650, "is_cursed": False, "image_url": "https://picsum.photos/seed/crystal_drone/400/300", "description": "未来予測AIと占星術アルゴリズムが同居した浮遊観測デバイス。"},
-    {"id": "item_08", "name": "ブラッド・エッジブレード", "category": "ファンタジー武器", "apparent_value": 700, "true_value": 950, "is_cursed": True, "image_url": "https://picsum.photos/seed/blood_edge/400/300", "description": "持ち主の闘気を吸い取って切れ味を増す呪われた魔剣。"},
-    {"id": "item_09", "name": "エーテル・チャージャー", "category": "魔法遺物", "apparent_value": 350, "true_value": 400, "is_cursed": False, "image_url": "https://picsum.photos/seed/ether_charger/400/300", "description": "魔力を無限に再充填できるとされる魔導バッテリーの試作品。"},
-    {"id": "item_10", "name": "次元回廊のパスカード", "category": "サイバー遺物", "apparent_value": 800, "true_value": 1500, "is_cursed": False, "image_url": "https://picsum.photos/seed/dimension_pass/400/300", "description": "裏社会のネットワークの最深層へアクセスできるブラックパス。"},
-    {"id": "item_11", "name": "模造エリクサーの空瓶", "category": "魔法遺物", "apparent_value": 150, "true_value": 20, "is_cursed": False, "image_url": "https://picsum.photos/seed/empty_elixir/400/300", "description": "かつて不老不死の薬が入っていたとされる、ただのガラスの空容器。"},
-    {"id": "item_12", "name": "ゴースト・インプラント", "category": "不法サイバーパーツ", "apparent_value": 550, "true_value": 1100, "is_cursed": True, "image_url": "https://picsum.photos/seed/ghost_implant/400/300", "description": "人格データを書き換える違法チップ。前の持ち主の意識が残る噂がある。"},
-    {"id": "item_13", "name": "タイタンの巨腕ガントレット", "category": "ファンタジー武器", "apparent_value": 650, "true_value": 750, "is_cursed": False, "image_url": "https://picsum.photos/seed/titan_gauntlet/400/300", "description": "圧倒的な怪力を得る代わりに、装着者の機動力を奪う重量級防具。"},
-    {"id": "item_14", "name": "キメラの遺伝子サンプル", "category": "サイバーファンタジー", "apparent_value": 500, "true_value": 850, "is_cursed": True, "image_url": "https://picsum.photos/seed/chimera_dna/400/300", "description": "竜の遺伝子とナマシンセクトを掛け合わせた危険な培養カプセル。"},
-    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "image_url": "https://picsum.photos/seed/twilight_mirror/400/300", "description": "覗き込むと、自分自身の死に様が映し出されるという不吉な手鏡。"}
+    {"id": "item_02", "name": "偽りの聖剣アロンダイト", "category": "ファンタジー武器", "apparent_value": 600, "true_value": 50, "is_cursed": False, "image_url": "images/fake_sword.jpg", "description": "神々しい輝きを放つが、実は精巧に作られた鍍金メッキのレプリカ。"},
+    {"id": "item_03", "name": "呪われたニューラル・バイザー", "category": "不法サイバーパーツ", "apparent_value": 450, "true_value": 100, "is_cursed": True, "image_url": "images/cursed_visor.jpg", "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"},
+    {"id": "item_04", "name": "竜血の錬金薬瓶", "category": "魔法遺物", "apparent_value": 200, "true_value": 700, "is_cursed": False, "image_url": "images/dragon_potion.jpg", "description": "ドロリとした怪しい液体。伝説の古龍の血だと証言されている。"},
+    {"id": "item_05", "name": "錆びついたAIメモリ端末", "category": "サイバー遺物", "apparent_value": 100, "true_value": 1200, "is_cursed": False, "image_url": "images/rusty_ai.jpg", "description": "一見ただのジャンク品。だが内部には旧時代の暗号通貨キーが眠る。"},
+    {"id": "item_06", "name": "死霊術師のクロノグラフ", "category": "呪物", "apparent_value": 500, "true_value": 900, "is_cursed": True, "image_url": "images/necromancer_watch.jpg", "description": "針が逆回転する怪しい懐中時計。強力な時間魔術の触媒。"},
+    {"id": "item_07", "name": "星詠みの水晶ドローン", "category": "サイバーファンタジー", "apparent_value": 400, "true_value": 650, "is_cursed": False, "image_url": "images/crystal_drone.jpg", "description": "未来予測AIと占星術アルゴリズムが同居した浮遊観測デバイス。"},
+    {"id": "item_08", "name": "ブラッド・エッジブレード", "category": "ファンタジー武器", "apparent_value": 700, "true_value": 950, "is_cursed": True, "image_url": "images/blood_edge.jpg", "description": "持ち主の闘気を吸い取って切れ味を増す呪われた魔剣。"},
+    {"id": "item_09", "name": "エーテル・チャージャー", "category": "魔法遺物", "apparent_value": 350, "true_value": 400, "is_cursed": False, "image_url": "images/ether_charger.jpg", "description": "魔力を無限に再充填できるとされる魔導バッテリーの試作品。"},
+    {"id": "item_10", "name": "次元回廊のパスカード", "category": "サイバー遺物", "apparent_value": 800, "true_value": 1500, "is_cursed": False, "image_url": "images/dimension_pass.jpg", "description": "裏社会のネットワークの最深層へアクセスできるブラックパス。"},
+    {"id": "item_11", "name": "模造エリクサーの空瓶", "category": "魔法遺物", "apparent_value": 150, "true_value": 20, "is_cursed": False, "image_url": "images/empty_elixir.jpg", "description": "かつて不老不死の薬が入っていたとされる、ただのガラスの空容器。"},
+    {"id": "item_12", "name": "ゴースト・インプラント", "category": "不法サイバーパーツ", "apparent_value": 550, "true_value": 1100, "is_cursed": True, "image_url": "images/ghost_implant.jpg", "description": "人格データを書き換える違法チップ。前の持ち主の意識が残る噂がある。"},
+    {"id": "item_13", "name": "タイタンの巨腕ガントレット", "category": "ファンタジー武器", "apparent_value": 650, "true_value": 750, "is_cursed": False, "image_url": "images/titan_gauntlet.jpg", "description": "圧倒的な怪力を得る代わりに、装着者の機動力を奪う重量級防具。"},
+    {"id": "item_14", "name": "キメラの遺伝子サンプル", "category": "サイバーファンタジー", "apparent_value": 500, "true_value": 850, "is_cursed": True, "image_url": "images/chimera_dna.jpg", "description": "竜の遺伝子とナマシンセクトを掛け合わせた危険な培養カプセル。"},
+    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "image_url": "images/twilight_mirror.jpg", "description": "覗き込むと、自分自身の死に様が映し出されるという不吉な手鏡。"}
 ]
 
 RIVALS = [
