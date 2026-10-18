@@ -52,7 +52,7 @@ str_lit.markdown("""
 # マスターデータ定義（15種類の出品アイテム）
 # ==========================================
 MASTER_ITEMS = [
-    {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "image_url": "https://picsum.photos/seed/cybercore/400/300", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
+    {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "image_url": "images/cybercore.jpg", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
     {"id": "item_02", "name": "偽りの聖剣アロンダイト", "category": "ファンタジー武器", "apparent_value": 600, "true_value": 50, "is_cursed": False, "image_url": "https://picsum.photos/seed/fake_sword/400/300", "description": "神々しい輝きを放つが、実は精巧に作られた鍍金メッキのレプリカ。"},
     {"id": "item_03", "name": "呪われたニューラル・バイザー", "category": "不法サイバーパーツ", "apparent_value": 450, "true_value": 100, "is_cursed": True, "image_url": "https://picsum.photos/seed/cursed_visor/400/300", "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"},
     {"id": "item_04", "name": "竜血の錬金薬瓶", "category": "魔法遺物", "apparent_value": 200, "true_value": 700, "is_cursed": False, "image_url": "https://picsum.photos/seed/dragon_potion/400/300", "description": "ドロリとした怪しい液体。伝説の古龍の血だと証言されている。"},
