@@ -11,7 +11,7 @@ str_lit.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# カスタムCSS（ダークファンタジー＆サイバーパンク風）
+# カスタムCSS（ダークファンタジー＆サイバーパンク風 ＆ オークション対戦カード用）
 str_lit.markdown("""
 <style>
     .stApp {
@@ -36,21 +36,30 @@ str_lit.markdown("""
         padding: 10px;
         border-radius: 4px;
         font-family: monospace;
-        height: 250px;
+        height: 220px;
         overflow-y: auto;
     }
-    .item-card {
+    .bidder-card {
         background-color: #161b2e;
         border: 1px solid #2d3748;
         border-radius: 8px;
-        padding: 15px;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    .bidder-card-active {
+        background-color: #1a365d;
+        border: 2px solid #00f0ff;
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        margin-bottom: 10px;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
 # マスターデータ定義（15種類の出品アイテム）
-# ※ unpurifiable: True のものは資金を払っても浄化不能な絶対的呪物
 # ==========================================
 MASTER_ITEMS = [
     {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "image_url": "images/cybercore.jpg", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
@@ -72,9 +81,9 @@ MASTER_ITEMS = [
 
 
 RIVALS = [
-    {"name": "貴族オルガ", "type": "堅実派", "budget": 1200, "favorite": "ファンタジー武器", "aggressiveness": 0.4},
-    {"name": "ハッカー・ゼロ", "type": "撹乱派", "budget": 1000, "favorite": "サイバー遺物", "aggressiveness": 0.7},
-    {"name": "コレクター・バルト", "type": "執着派", "budget": 1800, "favorite": "魔法遺物", "aggressiveness": 0.8}
+    {"name": "貴族オルガ", "type": "堅実派", "budget": 1200, "favorite": "ファンタジー武器", "aggressiveness": 0.4, "image": "https://picsum.photos/seed/rival_olga/100/100"},
+    {"name": "ハッカー・ゼロ", "type": "撹乱派", "budget": 1000, "favorite": "サイバー遺物", "aggressiveness": 0.7, "image": "https://picsum.photos/seed/rival_zero/100/100"},
+    {"name": "コレクター・バルト", "type": "執着派", "budget": 1800, "favorite": "魔法遺物", "aggressiveness": 0.8, "image": "https://picsum.photos/seed/rival_valto/100/100"}
 ]
 
 # ==========================================
@@ -91,12 +100,17 @@ if "initialized" not in str_lit.session_state:
     str_lit.session_state.current_item_index = 0
     str_lit.session_state.inventory = []  # 所持アイテム
     str_lit.session_state.museum = []  # ミュージアム永久保存アイテム
+    str_lit.session_state.unlocked_collection = set() # 一度でも獲得したアイテムIDを永続保存
     str_lit.session_state.appraised_items = {}
     str_lit.session_state.game_over = False
 
+    # バイト回数制限管理（日ごと）
+    str_lit.session_state.part_time_jobs_today = 0
+
     str_lit.session_state.auction_active = False
     str_lit.session_state.current_price = 0
-    str_lit.session_state.highest_bidder = None
+    str_lit.session_state.highest_bidder = "主催者"
+    str_lit.session_state.rival_bids = {r["name"]: "パス" for r in RIVALS}
     str_lit.session_state.auction_logs = []
     str_lit.session_state.daily_catalog = random.sample(MASTER_ITEMS, str_lit.session_state.items_per_day)
 
@@ -104,24 +118,26 @@ if "initialized" not in str_lit.session_state:
 # ロジック関数
 # ==========================================
 def apply_turn_penalties():
-    """ターン経過時のペナルティ（呪いアイテムの悪影響 ＆ 借金の利息・返済要求）"""
-    # 1. 呪いアイテムによるペナルティ
+    """ターン経過時のペナルティ（呪いアイテムの悪影響 ＆ 借金の利息）＆ バイト回数リセット"""
     curse_count = sum(1 for item in str_lit.session_state.inventory if item.get("is_cursed", False))
     if curse_count > 0:
         penalty = curse_count * 50
         str_lit.session_state.player_money = max(0, str_lit.session_state.player_money - penalty)
         str_lit.session_state.auction_logs.append(f"💀【呪いの災厄】呪物の悪影響により、資金が {penalty}万G 削られました...")
     
-    # 2. 借金（闇金）による利息ペナルティ
     if str_lit.session_state.debt > 0:
-        interest = int(str_lit.session_state.debt * 0.2)  # 20%の利息
+        interest = int(str_lit.session_state.debt * 0.2)
         str_lit.session_state.debt += interest
-        str_lit.session_state.auction_logs.append(f"💳【闇金からの取り立て】借金の利息が発生しました (+{interest}万G)。現在の借金残高: {str_lit.session_state.debt}万G")
+        str_lit.session_state.auction_logs.append(f"💳【闇金からの取り立て】借金の利息が発生しました (+{interest}万G)。残高: {str_lit.session_state.debt}万G")
+
+    # 日が変わったらバイト回数をリセット
+    str_lit.session_state.part_time_jobs_today = 0
 
 def start_next_item_auction():
     item = str_lit.session_state.daily_catalog[str_lit.session_state.current_item_index]
     str_lit.session_state.current_price = int(item["apparent_value"] * 0.5)
     str_lit.session_state.highest_bidder = "主催者"
+    str_lit.session_state.rival_bids = {r["name"]: "待機中" for r in RIVALS}
     str_lit.session_state.auction_logs = [f"【競売開始】『{item['name']}』が出品されました！ 初期価格: {str_lit.session_state.current_price}万G"]
     str_lit.session_state.auction_active = True
 
@@ -132,7 +148,9 @@ def process_rival_bids():
     bidders = []
     for rival in RIVALS:
         if rival["budget"] < current_p + 20:
+            str_lit.session_state.rival_bids[rival["name"]] = "資金切れ/パス"
             continue
+        
         should_bid = False
         interest_mult = 1.3 if rival["favorite"] in item["category"] else 1.0
         max_bid_limit = item["apparent_value"] * interest_mult * rival["aggressiveness"]
@@ -147,11 +165,14 @@ def process_rival_bids():
         if should_bid:
             bid_raise = random.choice([20, 40, 60])
             bidders.append((rival, current_p + bid_raise))
+        else:
+            str_lit.session_state.rival_bids[rival["name"]] = "様子見"
 
     if bidders:
         selected_rival, new_price = max(bidders, key=lambda x: x[1])
         str_lit.session_state.current_price = new_price
         str_lit.session_state.highest_bidder = selected_rival["name"]
+        str_lit.session_state.rival_bids[selected_rival["name"]] = f"{new_price}万G (最高値)"
         str_lit.session_state.auction_logs.append(f"⚡ {selected_rival['name']} が {new_price}万G に値上げしました！")
         return True
     return False
@@ -162,6 +183,8 @@ def finalize_auction(winner, price, item):
         str_lit.session_state.player_money -= price
         item_copy = item.copy()
         str_lit.session_state.inventory.append(item_copy)
+        # コレクション図鑑用に永久保存登録
+        str_lit.session_state.unlocked_collection.add(item["id"])
         str_lit.toast(f"🎉 {item['name']} を {price}万G で落札しました！", icon="🎉")
     else:
         str_lit.toast(f"❌ {winner} に {price}万G で競り落とされました...", icon="💸")
@@ -196,7 +219,7 @@ with str_lit.sidebar:
         str_lit.rerun()
 
 # --- タブ構成 ---
-tab1, tab2, tab3 = str_lit.tabs(["🏛️ オークション会場", "💼 所持品 & 闇市（資金調達・リスク）", "📖 レリック図鑑 & ミュージアム"])
+tab1, tab2, tab3 = str_lit.tabs(["🏛️ オークション会場", "💼 所持品 & 闇市（資金調達・返済）", "📖 レリック図鑑 & ミュージアム"])
 
 # ==========================================
 # TAB 1: オークション会場
@@ -206,7 +229,6 @@ with tab1:
         str_lit.header("🏆 5日間の全日程が終了しました！")
         inv_value = sum(i["true_value"] for i in str_lit.session_state.inventory)
         museum_value = sum(i["true_value"] * 1.5 for i in str_lit.session_state.museum)
-        # 最終評価から借金分をマイナス引算する
         total_asset = int(str_lit.session_state.player_money + inv_value + museum_value - str_lit.session_state.debt)
         
         str_lit.subheader(f"最終評価総資産（借金返済後）: {total_asset} 万G")
@@ -258,6 +280,37 @@ with tab1:
 
         else:
             str_lit.subheader(f"🔨 競売中：{current_item['name']}")
+            
+            # 参加者ステータス表示エリア（プレイヤー ＋ ライバル3人）
+            str_lit.markdown("#### 👥 参加者リアルタイム状況")
+            p_col, r1_col, r2_col, r3_col = str_lit.columns(4)
+
+            with p_col:
+                is_p_active = str_lit.session_state.highest_bidder == "あなた"
+                box_class = "bidder-card-active" if is_p_active else "bidder-card"
+                str_lit.markdown(f"""
+                <div class="{box_class}">
+                    <b>あなた（プレイヤー）</b><br>
+                    所持金: {str_lit.session_state.player_money}万G<br>
+                    状態: {'🌟 最高入札中！' if is_p_active else '参加中'}
+                </div>
+                """, unsafe_allow_html=True)
+
+            for r_idx, rival in enumerate(RIVALS):
+                r_col = [r1_col, r2_col, r3_col][r_idx]
+                is_r_active = str_lit.session_state.highest_bidder == rival["name"]
+                r_box_class = "bidder-card-active" if is_r_active else "bidder-card"
+                r_status = str_lit.session_state.rival_bids.get(rival["name"], "待機中")
+                with r_col:
+                    str_lit.markdown(f"""
+                    <div class="{r_box_class}">
+                        <b>{rival['name']}</b><br>
+                        <span style="font-size:0.85em; color:#a0aec0;">{rival['type']}</span><br>
+                        提示: <b>{r_status}</b>
+                    </div>
+                    """, unsafe_allow_html=True)
+
+            str_lit.markdown("---")
             col_left, col_right = str_lit.columns([1, 1])
 
             with col_left:
@@ -309,7 +362,7 @@ with tab1:
                         str_lit.rerun()
 
 # ==========================================
-# TAB 2: 所持品 & 闇市（資金調達・リスクメニュー）
+# TAB 2: 所持品 & 闇市（資金調達・借金返済）
 # ==========================================
 with tab2:
     str_lit.subheader("💼 あなたの所持アイテム（出口戦略 & 解呪判定）")
@@ -333,7 +386,6 @@ with tab2:
                     str_lit.write(f"**詳細:** {item['description']}")
                     str_lit.markdown("---")
                     
-                    # 呪い浄化ボタン（呪われていて、かつ「解呪不能」ではない場合のみ表示）
                     if item.get("is_cursed", False):
                         if item.get("unpurifiable", False):
                             str_lit.error("☠ このアイテムは専門家の力でも**解呪不能**な絶対的呪物です！ 浄化することができません。")
@@ -348,10 +400,8 @@ with tab2:
                                     str_lit.error("浄化費用（150万G）が足りません！")
                         str_lit.markdown("---")
 
-                    # 出口戦略ボタン
                     b1, b2, b3 = str_lit.columns(3)
                     
-                    # ① 即時転売
                     with b1:
                         sell_price = int(item['apparent_value'] * (0.4 if item.get('unpurifiable') else (0.6 if item.get('is_cursed') else 0.9)))
                         if str_lit.button(f"💵 即時転売\n({sell_price}万G)", key=f"sell_{idx}"):
@@ -360,7 +410,6 @@ with tab2:
                             str_lit.success(f"{item['name']} を即時転売しました！")
                             str_lit.rerun()
 
-                    # ② コレクターへの指名買い
                     with b2:
                         same_cat_count = sum(1 for i in str_lit.session_state.inventory if i["category"] == item["category"])
                         bonus_mult = 1.4 if same_cat_count >= 2 else 1.1
@@ -376,7 +425,6 @@ with tab2:
                             str_lit.success(f"コレクターに売却成功！ {collector_price}万G獲得！")
                             str_lit.rerun()
 
-                    # ③ ミュージアム永久保存
                     with b3:
                         if str_lit.button("🏛️ ミュージアムに永久保存", key=f"museum_{idx}"):
                             str_lit.session_state.museum.append(item)
@@ -385,9 +433,9 @@ with tab2:
                             str_lit.rerun()
 
     str_lit.markdown("---")
-    str_lit.subheader("🏬 闇市ブラックマーケット（資金調達 ＆ リスク・マイナス要素）")
+    str_lit.subheader("🏬 闇市ブラックマーケット（資金調達 ＆ 返済・リスクメニュー）")
     
-    col_shop1, col_shop2, col_shop3, col_shop4 = str_lit.columns(4)
+    col_shop1, col_shop2, col_shop3, col_shop4, col_shop5 = str_lit.columns(5)
     
     with col_shop1:
         str_lit.markdown("#### 🎫 鑑定アイテム")
@@ -403,15 +451,20 @@ with tab2:
 
     with col_shop2:
         str_lit.markdown("#### 🕵️ 闇バイト")
-        str_lit.write("安全に小銭を稼ぐ（＋150万G）。")
+        jobs_left = 2 - str_lit.session_state.get("part_time_jobs_today", 0)
+        str_lit.write(f"安全に稼ぐ（本日残り: {jobs_left}回）")
         if str_lit.button("闇バイト (+150万G)"):
-            str_lit.session_state.player_money += 150
-            str_lit.success("裏仕事を完遂し、150万Gを手に入れました。")
-            str_lit.rerun()
+            if str_lit.session_state.get("part_time_jobs_today", 0) < 2:
+                str_lit.session_state.player_money += 150
+                str_lit.session_state.part_time_jobs_today = str_lit.session_state.get("part_time_jobs_today", 0) + 1
+                str_lit.success("裏仕事を完遂し、150万Gを手に入れました。")
+                str_lit.rerun()
+            else:
+                str_lit.error("本日の闇バイト回数制限（2回）に達しました！日が変わると回復します。")
 
     with col_shop3:
         str_lit.markdown("#### 💳 闇金の借入")
-        str_lit.write("【リスク】今すぐ500万G得るが、毎ターン利息が発生。")
+        str_lit.write("今すぐ500万G得るが利息が発生。")
         if str_lit.button("闇金から借金 (+500万G)"):
             str_lit.session_state.player_money += 500
             str_lit.session_state.debt += 500
@@ -419,8 +472,24 @@ with tab2:
             str_lit.rerun()
 
     with col_shop4:
+        str_lit.markdown("#### 💰 借金返済")
+        str_lit.write("借金を500万Gずつ返済する。")
+        if str_lit.button("借金を500万G返済"):
+            if str_lit.session_state.debt > 0:
+                repay_amount = min(500, str_lit.session_state.debt)
+                if str_lit.session_state.player_money >= repay_amount:
+                    str_lit.session_state.player_money -= repay_amount
+                    str_lit.session_state.debt -= repay_amount
+                    str_lit.success(f"💳 借金を {repay_amount}万G 返済しました！ 残り借金: {str_lit.session_state.debt}万G")
+                    str_lit.rerun()
+                else:
+                    str_lit.error("返済する資金が足りません！")
+            else:
+                str_lit.info("現在、返済すべき借金はありません。")
+
+    with col_shop5:
         str_lit.markdown("#### 🧪 違法人体実験")
-        str_lit.write("【ハイリスク】40%で大金、60%で精神汚染（所持金半減）。")
+        str_lit.write("【ハイリスク】40%大金、60%所持金半減。")
         if str_lit.button("実験台になる"):
             if random.random() < 0.40:
                 str_lit.session_state.player_money += 600
@@ -450,15 +519,17 @@ with tab3:
 
     str_lit.markdown("---")
     str_lit.subheader("📖 レリック・コレクション全集（全15種コンプリート状況）")
+    str_lit.write("※一度でもオークションで落札・獲得したアイテムは、売却しても図鑑に記録され続けます。")
     cols = str_lit.columns(3)
     
-    unlocked_ids = [i["id"] for i in str_lit.session_state.inventory] + [i["id"] for i in str_lit.session_state.museum]
+    # 永続管理されている unlocked_collection を参照
+    unlocked_ids = str_lit.session_state.unlocked_collection
 
     for idx, item in enumerate(MASTER_ITEMS):
         with cols[idx % 3]:
             if item["id"] in unlocked_ids:
                 str_lit.image(item["image_url"], caption=item["name"], use_container_width=True)
-                str_lit.caption(f"真価: {item['true_value']}万G | {item['category']}")
+                str_lit.caption(f"真価: {item['true_value']}万G | {item['category']} (入手済✨)")
             else:
                 str_lit.markdown(f"### 🔒 {item['name']}")
                 str_lit.caption("オークションで獲得すると解放されます。")
