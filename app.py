@@ -73,10 +73,10 @@ MASTER_ITEMS = [
     {"id": "item_09", "name": "エーテル・チャージャー", "category": "魔法遺物", "apparent_value": 350, "true_value": 400, "is_cursed": False, "image_url": "images/ether_charger.jpg", "description": "魔力を無限に再充填できるとされる魔導バッテリーの試作品。"},
     {"id": "item_10", "name": "次元回廊のパスカード", "category": "サイバー遺物", "apparent_value": 800, "true_value": 1500, "is_cursed": False, "image_url": "images/dimension_pass.jpg", "description": "裏社会のネットワークの最深層へアクセスできるブラックパス。"},
     {"id": "item_11", "name": "模造エリクサーの空瓶", "category": "魔法遺物", "apparent_value": 150, "true_value": 20, "is_cursed": False, "image_url": "images/empty_elixir.jpg", "description": "かつて不老不死の薬が入っていたとされる、ただのガラスの空容器。"},
-    {"id": "item_12", "name": "ゴースト・インプラント", "category": "不法サイバーパーツ", "apparent_value": 550, "true_value": 1100, "is_cursed": True, "image_url": "images/ghost_implant.jpg", "description": "人格データを書き換える違法チップ。前の持ち主の意識が残る噂がある。"},
+    {"id": "item_12", "name": "ゴースト・インプラント", "category": "不法サイバーパーツ", "apparent_value": 550, "true_value": 1100, "is_cursed": True, "unpurifiable": True, "image_url": "images/ghost_implant.jpg", "description": "人格データを書き換える違法チップ。前の持ち主の意識が残る噂がある。"},
     {"id": "item_13", "name": "タイタンの巨腕ガントレット", "category": "ファンタジー武器", "apparent_value": 650, "true_value": 750, "is_cursed": False, "image_url": "images/titan_gauntlet.jpg", "description": "圧倒的な怪力を得る代わりに、装着者の機動力を奪う重量級防具。"},
     {"id": "item_14", "name": "キメラの遺伝子サンプル", "category": "サイバーファンタジー", "apparent_value": 500, "true_value": 850, "is_cursed": True, "image_url": "images/chimera_dna.jpg", "description": "竜の遺伝子とナマシンセクトを掛け合わせた危険な培養カプセル。"},
-    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "image_url": "images/twilight_mirror.jpg", "description": "覗き込むと、自分自身の死に様が映し出されるという不吉な手鏡。"}
+    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "unpurifiable": True, "image_url": "images/twilight_mirror.jpg", "description": "覗き込むと、自分自身の死に様が映し出されるという不吉な手鏡。"}
 ]
 
 
