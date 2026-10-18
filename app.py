@@ -81,7 +81,7 @@ MASTER_ITEMS = [
         "true_value": 100,
         "is_cursed": True,
         "image_url": "https://picsum.photos/seed/cursed_visor/400/300",
-        "description": "圧倒的な処理能力能力を誇るが、装着者の精神を侵食するバグが潜む。"
+        "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"
     },
     {
         "id": "item_04",
@@ -141,7 +141,6 @@ if "initialized" not in st.session_state:
     st.session_state.current_price = 0
     st.session_state.highest_bidder = None
     st.session_state.auction_logs = []
-    st.session_state.current_auction_items = []
     st.session_state.daily_catalog = random.sample(MASTER_ITEMS, min(st.session_state.items_per_day, len(MASTER_ITEMS)))
 
 # ==========================================
@@ -156,13 +155,13 @@ def start_next_item_auction():
     st.session_state.auction_active = True
 
 def process_rival_bids():
-    """ライバルAIの入札ロジック"""
+    """ライバルAIの入札ロジック（ライバルが上乗せできたらTrue、誰も上乗せできずパスならFalse）"""
     item = st.session_state.daily_catalog[st.session_state.current_item_index]
     current_p = st.session_state.current_price
 
     bidders = []
     for rival in RIVALS:
-        if rival["budget"] < current_p + 50:
+        if rival["budget"] < current_p + 20:
             continue
         
         # 思考判定
@@ -178,7 +177,7 @@ def process_rival_bids():
             should_bid = random.random() < 0.7
 
         if should_bid:
-            bid_raise = random.choice([20, 50, 100])
+            bid_raise = random.choice([20, 40, 60])
             bidders.append((rival, current_p + bid_raise))
 
     if bidders:
@@ -188,7 +187,29 @@ def process_rival_bids():
         st.session_state.highest_bidder = selected_rival["name"]
         st.session_state.auction_logs.append(f"⚡ {selected_rival['name']} が {new_price}万G に値上げしました！")
         return True
+    
     return False
+
+def finalize_auction(winner, price, item):
+    """オークション終了時の処理と次のアイテムへの移行"""
+    st.session_state.auction_active = False
+
+    if winner == "あなた":
+        st.session_state.player_money -= price
+        st.session_state.inventory.append(item)
+        st.toast(f"🎉 {item['name']} を {price}万G で落札しました！", icon="🎉")
+    else:
+        st.toast(f"❌ {winner} に {price}万G で競り落とされました...", icon="💸")
+
+    # 次のアイテムへ進む処理
+    st.session_state.current_item_index += 1
+    if st.session_state.current_item_index >= len(st.session_state.daily_catalog):
+        st.session_state.day += 1
+        st.session_state.current_item_index = 0
+        if st.session_state.day > st.session_state.max_days:
+            st.session_state.game_over = True
+        else:
+            st.session_state.daily_catalog = random.sample(MASTER_ITEMS, min(st.session_state.items_per_day, len(MASTER_ITEMS)))
 
 # ==========================================
 # UI & メイン画面レイアウト
@@ -292,7 +313,14 @@ with tab1:
                             st.session_state.current_price = bid_amount
                             st.session_state.highest_bidder = "あなた"
                             st.session_state.auction_logs.append(f"🔥 あなたが {bid_amount}万G に値上げしました！")
-                            process_rival_bids()
+                            
+                            # ライバルが追いついてくるか判定
+                            has_rival_countered = process_rival_bids()
+                            if not has_rival_countered:
+                                # ライバルが誰も追いつけなければ、プレイヤーの即時落札成立！
+                                st.session_state.auction_logs.append("✨ ライバルたちはこれ以上出せないようだ…あなたの落札が確定！")
+                                finalize_auction("あなた", st.session_state.current_price, current_item)
+                            
                             st.rerun()
                         else:
                             st.error("資金が足りません！")
@@ -304,38 +332,26 @@ with tab1:
                             st.session_state.current_price = bid_amount
                             st.session_state.highest_bidder = "あなた"
                             st.session_state.auction_logs.append(f"💥 あなたが強力な提示 {bid_amount}万G！")
-                            process_rival_bids()
+                            
+                            # 強気な金額なのでライバルが追いつく確率は低いが判定する
+                            has_rival_countered = process_rival_bids()
+                            if not has_rival_countered:
+                                st.session_state.auction_logs.append("✨ 圧倒的な高値に会場が静まり返った…あなたの落札が確定！")
+                                finalize_auction("あなた", st.session_state.current_price, current_item)
+                            
                             st.rerun()
                         else:
                             st.error("資金が足りません！")
 
                 with btn_col3:
                     if st.button("🏳️ 降りる（パス）"):
-                        # 降りた場合は自動で落札者を決定
+                        # 降りた場合はライバルの中から最高値の人が落札
                         while process_rival_bids():
                             pass
                         
-                        st.session_state.auction_active = False
                         winner = st.session_state.highest_bidder
                         price = st.session_state.current_price
-
-                        if winner == "あなた":
-                            st.session_state.player_money -= price
-                            st.session_state.inventory.append(current_item)
-                            st.toast(f"🎉 {current_item['name']} を {price}万G で落札しました！", icon="🎉")
-                        else:
-                            st.toast(f"❌ {winner} に {price}万G で競り落とされました...", icon="💸")
-
-                        # 次のアイテムへ進む処理
-                        st.session_state.current_item_index += 1
-                        if st.session_state.current_item_index >= len(st.session_state.daily_catalog):
-                            st.session_state.day += 1
-                            st.session_state.current_item_index = 0
-                            if st.session_state.day > st.session_state.max_days:
-                                st.session_state.game_over = True
-                            else:
-                                st.session_state.daily_catalog = random.sample(MASTER_ITEMS, min(st.session_state.items_per_day, len(MASTER_ITEMS)))
-
+                        finalize_auction(winner, price, current_item)
                         st.rerun()
 
 # ==========================================
