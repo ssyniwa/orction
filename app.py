@@ -55,7 +55,7 @@ str_lit.markdown("""
 MASTER_ITEMS = [
     {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "image_url": "images/cybercore.jpg", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
     {"id": "item_02", "name": "偽りの聖剣アロンダイト", "category": "ファンタジー武器", "apparent_value": 600, "true_value": 50, "is_cursed": False, "image_url": "images/fake_sword.jpg", "description": "神々しい輝きを放つが、実は精巧に作られた鍍金メッキのレプリカ。"},
-    {"id": "item_03", "name": "呪われたニューラル・バイザー", "category": "不法サイバーパーツ", "apparent_value": 450, "true_value": 100, "is_cursed": True, "image_url": "images/cursed_visor.jpg", "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"},
+    {"id": "item_03", "name": "呪われたニューラル・バイザー", "category": "不法サイバーパーツ", "apparent_value": 450, "true_value": 1000, "is_cursed": True, "image_url": "images/cursed_visor.jpg", "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"},
     {"id": "item_04", "name": "竜血の錬金薬瓶", "category": "魔法遺物", "apparent_value": 200, "true_value": 700, "is_cursed": False, "image_url": "images/dragon_potion.jpg", "description": "ドロリとした怪しい液体。伝説の古龍の血だと証言されている。"},
     {"id": "item_05", "name": "錆びついたAIメモリ端末", "category": "サイバー遺物", "apparent_value": 100, "true_value": 1200, "is_cursed": False, "image_url": "images/rusty_ai.jpg", "description": "一見ただのジャンク品。だが内部には旧時代の暗号通貨キーが眠る。"},
     {"id": "item_06", "name": "死霊術師のクロノグラフ", "category": "呪物", "apparent_value": 500, "true_value": 900, "is_cursed": True, "image_url": "images/necromancer_watch.jpg", "description": "針が逆回転する怪しい懐中時計。強力な時間魔術の触媒。"},
