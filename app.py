@@ -100,6 +100,14 @@ if "initialized" not in str_lit.session_state:
 # ==========================================
 # ロジック関数
 # ==========================================
+def apply_cursed_penalty():
+    """インベントリにある呪いアイテムによる毎ターンの資金減少ペナルティ"""
+    curse_count = sum(1 for item in str_lit.session_state.inventory if item.get("is_cursed", False))
+    if curse_count > 0:
+        penalty = curse_count * 50  # 呪い1つにつき50万G削られる
+        str_lit.session_state.player_money = max(0, str_lit.session_state.player_money - penalty)
+        str_lit.session_state.auction_logs.append(f"💀【呪いの災厄】所持している呪物から悪影響が発生！ 資金が {penalty}万G 削られました...")
+
 def start_next_item_auction():
     item = str_lit.session_state.daily_catalog[str_lit.session_state.current_item_index]
     str_lit.session_state.current_price = int(item["apparent_value"] * 0.5)
@@ -142,7 +150,9 @@ def finalize_auction(winner, price, item):
     str_lit.session_state.auction_active = False
     if winner == "あなた":
         str_lit.session_state.player_money -= price
-        str_lit.session_state.inventory.append(item)
+        # インベントリ追加時にマスターデータのコピーを持たせることで個別に呪い状態を管理できるようにする
+        item_copy = item.copy()
+        str_lit.session_state.inventory.append(item_copy)
         str_lit.toast(f"🎉 {item['name']} を {price}万G で落札しました！", icon="🎉")
     else:
         str_lit.toast(f"❌ {winner} に {price}万G で競り落とされました...", icon="💸")
@@ -154,6 +164,8 @@ def finalize_auction(winner, price, item):
         if str_lit.session_state.day > str_lit.session_state.max_days:
             str_lit.session_state.game_over = True
         else:
+            # 日が変わる時に呪いペナルティを適用
+            apply_cursed_penalty()
             str_lit.session_state.daily_catalog = random.sample(MASTER_ITEMS, str_lit.session_state.items_per_day)
 
 # ==========================================
@@ -182,7 +194,6 @@ tab1, tab2, tab3 = str_lit.tabs(["🏛️ オークション会場", "💼 所�
 with tab1:
     if str_lit.session_state.game_over:
         str_lit.header("🏆 5日間の全日程が終了しました！")
-        # 資産計算：現金 ＋ 所持品価値 ＋ ミュージアム評価（1.5倍ボーナス）
         inv_value = sum(i["true_value"] for i in str_lit.session_state.inventory)
         museum_value = sum(i["true_value"] * 1.5 for i in str_lit.session_state.museum)
         total_asset = int(str_lit.session_state.player_money + inv_value + museum_value)
@@ -289,12 +300,13 @@ with tab1:
 # TAB 2: 所持品 & 闇市（資金調達）
 # ==========================================
 with tab2:
-    str_lit.subheader("💼 あなたの所持アイテム（出口戦略を選択）")
+    str_lit.subheader("💼 あなたの所持アイテム（出口戦略 & 呪い浄化）")
     if not str_lit.session_state.inventory:
         str_lit.info("落札したアイテムはまだありません。オークションでアイテムを獲得しましょう。")
     else:
         for idx, item in enumerate(str_lit.session_state.inventory):
-            with str_lit.expander(f"{'⚠ ' if item['is_cursed'] else ''}{item['name']} ({item['category']})"):
+            status_text = "⚠ 呪われています (ターン毎に資金減少・売却価ペナルティ)" if item.get("is_cursed", False) else "✨ 浄化済み (安全)"
+            with str_lit.expander(f"{'⚠ ' if item.get('is_cursed', False) else ''}{item['name']} ({item['category']}) - {status_text}"):
                 col_a, col_b = str_lit.columns([1, 2])
                 with col_a:
                     str_lit.image(item["image_url"], width=150)
@@ -303,27 +315,39 @@ with tab2:
                     str_lit.write(f"**詳細:** {item['description']}")
                     str_lit.markdown("---")
                     
-                    # 3つの出口戦略ボタン
+                    # 呪い浄化ボタン（呪われている場合のみ表示）
+                    if item.get("is_cursed", False):
+                        if str_lit.button("🔮 呪い専門家に封印・浄化を依頼する (150万G)", key=f"purify_{idx}"):
+                            if str_lit.session_state.player_money >= 150:
+                                str_lit.session_state.player_money -= 150
+                                item["is_cursed"] = False
+                                str_lit.success(f"{item['name']} の呪いが完全に浄化されました！")
+                                str_lit.rerun()
+                            else:
+                                str_lit.error("浄化費用（150万G）が足りません！")
+                        str_lit.markdown("---")
+
+                    # 出口戦略ボタン
                     b1, b2, b3 = str_lit.columns(3)
                     
                     # ① 即時転売
                     with b1:
-                        sell_price = int(item['apparent_value'] * (0.6 if item['is_cursed'] else 0.9))
+                        sell_price = int(item['apparent_value'] * (0.6 if item.get('is_cursed', False) else 0.9))
                         if str_lit.button(f"💵 即時転売\n({sell_price}万G)", key=f"sell_{idx}"):
                             str_lit.session_state.player_money += sell_price
                             str_lit.session_state.inventory.pop(idx)
                             str_lit.success(f"{item['name']} を即時転売しました！")
                             str_lit.rerun()
 
-                    # ② コレクターへの指名買い（同一カテゴリが2つ以上あればセットボーナス）
+                    # ② コレクターへの指名買い
                     with b2:
                         same_cat_count = sum(1 for i in str_lit.session_state.inventory if i["category"] == item["category"])
                         bonus_mult = 1.4 if same_cat_count >= 2 else 1.1
-                        collector_price = int(item['true_value'] * bonus_mult * (0.5 if item['is_cursed'] else 1.0))
+                        collector_price = int(item['true_value'] * bonus_mult * (0.5 if item.get('is_cursed', False) else 1.0))
                         
                         btn_label = f"📦 指名買い売却\n({collector_price}万G)"
                         if same_cat_count >= 2:
-                            btn_label += " ⭐セットボーナス発動!"
+                            btn_label += " ⭐セットボーナス!"
                             
                         if str_lit.button(btn_label, key=f"collector_{idx}"):
                             str_lit.session_state.player_money += collector_price
@@ -400,7 +424,6 @@ with tab3:
     str_lit.subheader("📖 レリック・コレクション全集（全15種コンプリート状況）")
     cols = str_lit.columns(3)
     
-    # 所持品 ＋ ミュージアム ＋ これまでに入手した全IDを判定
     unlocked_ids = [i["id"] for i in str_lit.session_state.inventory] + [i["id"] for i in str_lit.session_state.museum]
 
     for idx, item in enumerate(MASTER_ITEMS):
