@@ -50,23 +50,24 @@ str_lit.markdown("""
 
 # ==========================================
 # マスターデータ定義（15種類の出品アイテム）
+# ※ unpurifiable: True のものは資金を払っても浄化不能な絶対的呪物
 # ==========================================
 MASTER_ITEMS = [
-    {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "image_url": "images/cybercore.jpg", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
-    {"id": "item_02", "name": "偽りの聖剣アロンダイト", "category": "ファンタジー武器", "apparent_value": 600, "true_value": 50, "is_cursed": False, "image_url": "images/fake_sword.jpg", "description": "神々しい輝きを放つが、実は精巧に作られた鍍金メッキのレプリカ。"},
-    {"id": "item_03", "name": "呪われたニューラル・バイザー", "category": "不法サイバーパーツ", "apparent_value": 450, "true_value": 100, "is_cursed": True, "image_url": "images/cursed_visor.jpg", "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"},
-    {"id": "item_04", "name": "竜血の錬金薬瓶", "category": "魔法遺物", "apparent_value": 200, "true_value": 700, "is_cursed": False, "image_url": "images/dragon_potion.jpg", "description": "ドロリとした怪しい液体。伝説の古龍の血だと証言されている。"},
-    {"id": "item_05", "name": "錆びついたAIメモリ端末", "category": "サイバー遺物", "apparent_value": 100, "true_value": 1200, "is_cursed": False, "image_url": "images/rusty_ai.jpg", "description": "一見ただのジャンク品。だが内部には旧時代の暗号通貨キーが眠る。"},
-    {"id": "item_06", "name": "死霊術師のクロノグラフ", "category": "呪物", "apparent_value": 500, "true_value": 900, "is_cursed": True, "image_url": "images/necromancer_watch.jpg", "description": "針が逆回転する怪しい懐中時計。強力な時間魔術の触媒。"},
-    {"id": "item_07", "name": "星詠みの水晶ドローン", "category": "サイバーファンタジー", "apparent_value": 400, "true_value": 650, "is_cursed": False, "image_url": "images/crystal_drone.jpg", "description": "未来予測AIと占星術アルゴリズムが同居した浮遊観測デバイス。"},
-    {"id": "item_08", "name": "ブラッド・エッジブレード", "category": "ファンタジー武器", "apparent_value": 700, "true_value": 950, "is_cursed": True, "image_url": "images/blood_edge.jpg", "description": "持ち主の闘気を吸い取って切れ味を増す呪われた魔剣。"},
-    {"id": "item_09", "name": "エーテル・チャージャー", "category": "魔法遺物", "apparent_value": 350, "true_value": 400, "is_cursed": False, "image_url": "images/ether_charger.jpg", "description": "魔力を無限に再充填できるとされる魔導バッテリーの試作品。"},
-    {"id": "item_10", "name": "次元回廊のパスカード", "category": "サイバー遺物", "apparent_value": 800, "true_value": 1500, "is_cursed": False, "image_url": "images/dimension_pass.jpg", "description": "裏社会のネットワークの最深層へアクセスできるブラックパス。"},
-    {"id": "item_11", "name": "模造エリクサーの空瓶", "category": "魔法遺物", "apparent_value": 150, "true_value": 20, "is_cursed": False, "image_url": "images/empty_elixir.jpg", "description": "かつて不老不死の薬が入っていたとされる、ただのガラスの空容器。"},
-    {"id": "item_12", "name": "ゴースト・インプラント", "category": "不法サイバーパーツ", "apparent_value": 550, "true_value": 1100, "is_cursed": True, "image_url": "images/ghost_implant.jpg", "description": "人格データを書き換える違法チップ。前の持ち主の意識が残る噂がある。"},
-    {"id": "item_13", "name": "タイタンの巨腕ガントレット", "category": "ファンタジー武器", "apparent_value": 650, "true_value": 750, "is_cursed": False, "image_url": "images/titan_gauntlet.jpg", "description": "圧倒的な怪力を得る代わりに、装着者の機動力を奪う重量級防具。"},
-    {"id": "item_14", "name": "キメラの遺伝子サンプル", "category": "サイバーファンタジー", "apparent_value": 500, "true_value": 850, "is_cursed": True, "image_url": "images/chimera_dna.jpg", "description": "竜の遺伝子とナマシンセクトを掛け合わせた危険な培養カプセル。"},
-    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "image_url": "images/twilight_mirror.jpg", "description": "覗き込むと、自分自身の死に様が映し出されるという不吉な手鏡。"}
+    {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/cybercore/400/300", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
+    {"id": "item_02", "name": "偽りの聖剣アロンダイト", "category": "ファンタジー武器", "apparent_value": 600, "true_value": 50, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/fake_sword/400/300", "description": "神々しい輝きを放つが、実は精巧に作られた鍍金メッキのレプリカ。"},
+    {"id": "item_03", "name": "呪われたニューラル・バイザー", "category": "不法サイバーパーツ", "apparent_value": 450, "true_value": 100, "is_cursed": True, "unpurifiable": False, "image_url": "https://picsum.photos/seed/cursed_visor/400/300", "description": "圧倒的な処理能力を誇るが、装着者の精神を侵食するバグが潜む。"},
+    {"id": "item_04", "name": "竜血の錬金薬瓶", "category": "魔法遺物", "apparent_value": 200, "true_value": 700, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/dragon_potion/400/300", "description": "ドロリとした怪しい液体。伝説の古龍の血だと証言されている。"},
+    {"id": "item_05", "name": "錆びついたAIメモリ端末", "category": "サイバー遺物", "apparent_value": 100, "true_value": 1200, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/rusty_ai/400/300", "description": "一見ただのジャンク品。だが内部には旧時代の暗号通貨キーが眠る。"},
+    {"id": "item_06", "name": "死霊術師のクロノグラフ", "category": "呪物", "apparent_value": 500, "true_value": 900, "is_cursed": True, "unpurifiable": False, "image_url": "https://picsum.photos/seed/necromancer_watch/400/300", "description": "針が逆回転する怪しい懐中時計。強力な時間魔術の触媒。"},
+    {"id": "item_07", "name": "星詠みの水晶ドローン", "category": "サイバーファンタジー", "apparent_value": 400, "true_value": 650, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/crystal_drone/400/300", "description": "未来予測AIと占星術アルゴリズムが同居した浮遊観測デバイス。"},
+    {"id": "item_08", "name": "ブラッド・エッジブレード", "category": "ファンタジー武器", "apparent_value": 700, "true_value": 950, "is_cursed": True, "unpurifiable": True, "image_url": "https://picsum.photos/seed/blood_edge/400/300", "description": "【解呪不能】持ち主の闘気を吸い取り続ける、永遠に浄化できない魔剣。"},
+    {"id": "item_09", "name": "エーテル・チャージャー", "category": "魔法遺物", "apparent_value": 350, "true_value": 400, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/ether_charger/400/300", "description": "魔力を無限に再充填できるとされる魔導バッテリーの試作品。"},
+    {"id": "item_10", "name": "次元回廊のパスカード", "category": "サイバー遺物", "apparent_value": 800, "true_value": 1500, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/dimension_pass/400/300", "description": "裏社会のネットワークの最深層へアクセスできるブラックパス。"},
+    {"id": "item_11", "name": "模造エリクサーの空瓶", "category": "魔法遺物", "apparent_value": 150, "true_value": 20, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/empty_elixir/400/300", "description": "かつて不老不死の薬が入っていたとされる、ただのガラスの空容器。"},
+    {"id": "item_12", "name": "ゴースト・インプラント", "category": "不法サイバーパーツ", "apparent_value": 550, "true_value": 1100, "is_cursed": True, "unpurifiable": False, "image_url": "https://picsum.photos/seed/ghost_implant/400/300", "description": "人格データを書き換える違法チップ。前の持ち主の意識が残る噂がある。"},
+    {"id": "item_13", "name": "タイタンの巨腕ガントレット", "category": "ファンタジー武器", "apparent_value": 650, "true_value": 750, "is_cursed": False, "unpurifiable": False, "image_url": "https://picsum.photos/seed/titan_gauntlet/400/300", "description": "圧倒的な怪力を得る代わりに、装着者の機動力を奪う重量級防具。"},
+    {"id": "item_14", "name": "キメラの遺伝子サンプル", "category": "サイバーファンタジー", "apparent_value": 500, "true_value": 850, "is_cursed": True, "unpurifiable": False, "image_url": "https://picsum.photos/seed/chimera_dna/400/300", "description": "竜の遺伝子とナマシンセクトを掛け合わせた危険な培養カプセル。"},
+    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "unpurifiable": True, "image_url": "https://picsum.photos/seed/twilight_mirror/400/300", "description": "【解呪不能】覗き込む者の魂を縛る、絶対にして不磨の呪われた手鏡。"}
 ]
 
 RIVALS = [
@@ -81,6 +82,7 @@ RIVALS = [
 if "initialized" not in str_lit.session_state:
     str_lit.session_state.initialized = True
     str_lit.session_state.player_money = 1200  # 初期所持金（万G）
+    str_lit.session_state.debt = 0             # 借金（万G）
     str_lit.session_state.appraisal_tickets = 3  # 初期鑑定チケット
     str_lit.session_state.day = 1
     str_lit.session_state.max_days = 5
@@ -100,13 +102,20 @@ if "initialized" not in str_lit.session_state:
 # ==========================================
 # ロジック関数
 # ==========================================
-def apply_cursed_penalty():
-    """インベントリにある呪いアイテムによる毎ターンの資金減少ペナルティ"""
+def apply_turn_penalties():
+    """ターン経過時のペナルティ（呪いアイテムの悪影響 ＆ 借金の利息・返済要求）"""
+    # 1. 呪いアイテムによるペナルティ
     curse_count = sum(1 for item in str_lit.session_state.inventory if item.get("is_cursed", False))
     if curse_count > 0:
-        penalty = curse_count * 50  # 呪い1つにつき50万G削られる
+        penalty = curse_count * 50
         str_lit.session_state.player_money = max(0, str_lit.session_state.player_money - penalty)
-        str_lit.session_state.auction_logs.append(f"💀【呪いの災厄】所持している呪物から悪影響が発生！ 資金が {penalty}万G 削られました...")
+        str_lit.session_state.auction_logs.append(f"💀【呪いの災厄】呪物の悪影響により、資金が {penalty}万G 削られました...")
+    
+    # 2. 借金（闇金）による利息ペナルティ
+    if str_lit.session_state.debt > 0:
+        interest = int(str_lit.session_state.debt * 0.2)  # 20%の利息
+        str_lit.session_state.debt += interest
+        str_lit.session_state.auction_logs.append(f"💳【闇金からの取り立て】借金の利息が発生しました (+{interest}万G)。現在の借金残高: {str_lit.session_state.debt}万G")
 
 def start_next_item_auction():
     item = str_lit.session_state.daily_catalog[str_lit.session_state.current_item_index]
@@ -150,7 +159,6 @@ def finalize_auction(winner, price, item):
     str_lit.session_state.auction_active = False
     if winner == "あなた":
         str_lit.session_state.player_money -= price
-        # インベントリ追加時にマスターデータのコピーを持たせることで個別に呪い状態を管理できるようにする
         item_copy = item.copy()
         str_lit.session_state.inventory.append(item_copy)
         str_lit.toast(f"🎉 {item['name']} を {price}万G で落札しました！", icon="🎉")
@@ -164,8 +172,7 @@ def finalize_auction(winner, price, item):
         if str_lit.session_state.day > str_lit.session_state.max_days:
             str_lit.session_state.game_over = True
         else:
-            # 日が変わる時に呪いペナルティを適用
-            apply_cursed_penalty()
+            apply_turn_penalties()
             str_lit.session_state.daily_catalog = random.sample(MASTER_ITEMS, str_lit.session_state.items_per_day)
 
 # ==========================================
@@ -175,6 +182,8 @@ with str_lit.sidebar:
     str_lit.title("🎴 禁忌のセリ市")
     str_lit.markdown("---")
     str_lit.metric("💰 所持金", f"{str_lit.session_state.player_money} 万G")
+    if str_lit.session_state.debt > 0:
+        str_lit.metric("💳 借金残高", f"{str_lit.session_state.debt} 万G", delta_color="inverse")
     str_lit.metric("🏛️ ミュージアム展示数", f"{len(str_lit.session_state.museum)} 点")
     str_lit.metric("🔍 鑑定チケット", f"{str_lit.session_state.appraisal_tickets} 枚")
     str_lit.metric("📅 開催日数", f"{str_lit.session_state.day} / {str_lit.session_state.max_days} 日目")
@@ -186,7 +195,7 @@ with str_lit.sidebar:
         str_lit.rerun()
 
 # --- タブ構成 ---
-tab1, tab2, tab3 = str_lit.tabs(["🏛️ オークション会場", "💼 所持品 & 闇市（資金調達）", "📖 レリック図鑑 & ミュージアム"])
+tab1, tab2, tab3 = str_lit.tabs(["🏛️ オークション会場", "💼 所持品 & 闇市（資金調達・リスク）", "📖 レリック図鑑 & ミュージアム"])
 
 # ==========================================
 # TAB 1: オークション会場
@@ -196,9 +205,10 @@ with tab1:
         str_lit.header("🏆 5日間の全日程が終了しました！")
         inv_value = sum(i["true_value"] for i in str_lit.session_state.inventory)
         museum_value = sum(i["true_value"] * 1.5 for i in str_lit.session_state.museum)
-        total_asset = int(str_lit.session_state.player_money + inv_value + museum_value)
+        # 最終評価から借金分をマイナス引算する
+        total_asset = int(str_lit.session_state.player_money + inv_value + museum_value - str_lit.session_state.debt)
         
-        str_lit.subheader(f"最終評価総資産: {total_asset} 万G (現金 + 所持品 + ミュージアム展示)")
+        str_lit.subheader(f"最終評価総資産（借金返済後）: {total_asset} 万G")
 
         if total_asset >= 5000:
             str_lit.balloons()
@@ -206,7 +216,7 @@ with tab1:
         elif total_asset >= 2500:
             str_lit.info("🎉 **エンディング：一流レリックディーラー**\n確かな目利きと経営手腕で巨万の富を築き上げました。")
         else:
-            str_lit.error("💀 **エンディング：破産と黄昏**\n贋作と不運に惑わされ、闇の街に消えていきました…")
+            str_lit.error("💀 **エンディング：破産と黄昏**\n借金と呪いに押しつぶされ、闇の街の底に消えていきました…")
 
     else:
         current_item = str_lit.session_state.daily_catalog[str_lit.session_state.current_item_index]
@@ -226,7 +236,8 @@ with tab1:
 
                 if current_item["id"] in str_lit.session_state.appraised_items:
                     info = str_lit.session_state.appraised_items[current_item["id"]]
-                    str_lit.success(f"🔍 **鑑定結果**: 真の価値 = {info['true_value']}万G | 呪い = {'あり(⚠)' if info['is_cursed'] else 'なし'}")
+                    curse_msg = "解呪不能の絶対的呪物(⚠⚠)" if current_item.get("unpurifiable") else ("あり(⚠)" if info['is_cursed'] else "なし")
+                    str_lit.success(f"🔍 **鑑定結果**: 真の価値 = {info['true_value']}万G | 呪い = {curse_msg}")
                 else:
                     if str_lit.button("🔍 鑑定チケットを使って真価を見破る"):
                         if str_lit.session_state.appraisal_tickets > 0:
@@ -297,16 +308,22 @@ with tab1:
                         str_lit.rerun()
 
 # ==========================================
-# TAB 2: 所持品 & 闇市（資金調達）
+# TAB 2: 所持品 & 闇市（資金調達・リスクメニュー）
 # ==========================================
 with tab2:
-    str_lit.subheader("💼 あなたの所持アイテム（出口戦略 & 呪い浄化）")
+    str_lit.subheader("💼 あなたの所持アイテム（出口戦略 & 解呪判定）")
     if not str_lit.session_state.inventory:
         str_lit.info("落札したアイテムはまだありません。オークションでアイテムを獲得しましょう。")
     else:
         for idx, item in enumerate(str_lit.session_state.inventory):
-            status_text = "⚠ 呪われています (ターン毎に資金減少・売却価ペナルティ)" if item.get("is_cursed", False) else "✨ 浄化済み (安全)"
-            with str_lit.expander(f"{'⚠ ' if item.get('is_cursed', False) else ''}{item['name']} ({item['category']}) - {status_text}"):
+            if item.get("unpurifiable", False):
+                status_text = "☠ 【解呪不能】絶対的呪物 (浄化不可・所持ペナルティ大)"
+            elif item.get("is_cursed", False):
+                status_text = "⚠ 呪われています (浄化可能)"
+            else:
+                status_text = "✨ 浄化済み (安全)"
+
+            with str_lit.expander(f"{'☠ ' if item.get('unpurifiable') else ('⚠ ' if item.get('is_cursed') else '')}{item['name']} ({item['category']}) - {status_text}"):
                 col_a, col_b = str_lit.columns([1, 2])
                 with col_a:
                     str_lit.image(item["image_url"], width=150)
@@ -315,16 +332,19 @@ with tab2:
                     str_lit.write(f"**詳細:** {item['description']}")
                     str_lit.markdown("---")
                     
-                    # 呪い浄化ボタン（呪われている場合のみ表示）
+                    # 呪い浄化ボタン（呪われていて、かつ「解呪不能」ではない場合のみ表示）
                     if item.get("is_cursed", False):
-                        if str_lit.button("🔮 呪い専門家に封印・浄化を依頼する (150万G)", key=f"purify_{idx}"):
-                            if str_lit.session_state.player_money >= 150:
-                                str_lit.session_state.player_money -= 150
-                                item["is_cursed"] = False
-                                str_lit.success(f"{item['name']} の呪いが完全に浄化されました！")
-                                str_lit.rerun()
-                            else:
-                                str_lit.error("浄化費用（150万G）が足りません！")
+                        if item.get("unpurifiable", False):
+                            str_lit.error("☠ このアイテムは専門家の力でも**解呪不能**な絶対的呪物です！ 浄化することができません。")
+                        else:
+                            if str_lit.button("🔮 呪い専門家に封印・浄化を依頼する (150万G)", key=f"purify_{idx}"):
+                                if str_lit.session_state.player_money >= 150:
+                                    str_lit.session_state.player_money -= 150
+                                    item["is_cursed"] = False
+                                    str_lit.success(f"{item['name']} の呪いが完全に浄化されました！")
+                                    str_lit.rerun()
+                                else:
+                                    str_lit.error("浄化費用（150万G）が足りません！")
                         str_lit.markdown("---")
 
                     # 出口戦略ボタン
@@ -332,7 +352,7 @@ with tab2:
                     
                     # ① 即時転売
                     with b1:
-                        sell_price = int(item['apparent_value'] * (0.6 if item.get('is_cursed', False) else 0.9))
+                        sell_price = int(item['apparent_value'] * (0.4 if item.get('unpurifiable') else (0.6 if item.get('is_cursed') else 0.9)))
                         if str_lit.button(f"💵 即時転売\n({sell_price}万G)", key=f"sell_{idx}"):
                             str_lit.session_state.player_money += sell_price
                             str_lit.session_state.inventory.pop(idx)
@@ -343,7 +363,7 @@ with tab2:
                     with b2:
                         same_cat_count = sum(1 for i in str_lit.session_state.inventory if i["category"] == item["category"])
                         bonus_mult = 1.4 if same_cat_count >= 2 else 1.1
-                        collector_price = int(item['true_value'] * bonus_mult * (0.5 if item.get('is_cursed', False) else 1.0))
+                        collector_price = int(item['true_value'] * bonus_mult * (0.3 if item.get('unpurifiable') else (0.5 if item.get('is_cursed') else 1.0)))
                         
                         btn_label = f"📦 指名買い売却\n({collector_price}万G)"
                         if same_cat_count >= 2:
@@ -364,14 +384,14 @@ with tab2:
                             str_lit.rerun()
 
     str_lit.markdown("---")
-    str_lit.subheader("🏬 闇市ブラックマーケット（資金調達手段）")
+    str_lit.subheader("🏬 闇市ブラックマーケット（資金調達 ＆ リスク・マイナス要素）")
     
-    col_shop1, col_shop2, col_shop3 = str_lit.columns(3)
+    col_shop1, col_shop2, col_shop3, col_shop4 = str_lit.columns(4)
     
     with col_shop1:
         str_lit.markdown("#### 🎫 鑑定アイテム")
-        str_lit.write("真贋や呪いを見破るチケットを購入。")
-        if str_lit.button("鑑定チケット購入 (100万G)"):
+        str_lit.write("真贋や呪いを見破るチケット。")
+        if str_lit.button("鑑定券購入 (100万G)"):
             if str_lit.session_state.player_money >= 100:
                 str_lit.session_state.player_money -= 100
                 str_lit.session_state.appraisal_tickets += 1
@@ -381,28 +401,35 @@ with tab2:
                 str_lit.error("資金が足りません！")
 
     with col_shop2:
-        str_lit.markdown("#### 🕵️ 闇バイト・情報売買")
-        str_lit.write("裏の仕事を請け負って安全に小銭を稼ぐ。")
-        if str_lit.button("闇バイトで稼ぐ (+150万G)"):
+        str_lit.markdown("#### 🕵️ 闇バイト")
+        str_lit.write("安全に小銭を稼ぐ（＋150万G）。")
+        if str_lit.button("闇バイト (+150万G)"):
             str_lit.session_state.player_money += 150
             str_lit.success("裏仕事を完遂し、150万Gを手に入れました。")
             str_lit.rerun()
 
     with col_shop3:
-        str_lit.markdown("#### 🎰 地下カジノ（違法スロット）")
-        str_lit.write("50万Gを賭けて一攫千金（成功で＋300万G）！")
-        if str_lit.button("スロットを回す (賭け金: 50万G)"):
-            if str_lit.session_state.player_money >= 50:
-                str_lit.session_state.player_money -= 50
-                if random.random() < 0.35:  # 35%の確率で当たり
-                    str_lit.session_state.player_money += 300
-                    str_lit.balloons()
-                    str_lit.success("🎰 JACKPOT!! 300万Gを獲得しました！")
-                else:
-                    str_lit.error("🎰 外れ... 賭け金が没収されました。")
-                str_lit.rerun()
+        str_lit.markdown("#### 💳 闇金の借入")
+        str_lit.write("【リスク】今すぐ500万G得るが、毎ターン利息が発生。")
+        if str_lit.button("闇金から借金 (+500万G)"):
+            str_lit.session_state.player_money += 500
+            str_lit.session_state.debt += 500
+            str_lit.warning("⚠️ 闇金から500万Gを借り入れました。毎ターン利息が膨らみます！")
+            str_lit.rerun()
+
+    with col_shop4:
+        str_lit.markdown("#### 🧪 違法人体実験")
+        str_lit.write("【ハイリスク】40%で大金、60%で精神汚染（所持金半減）。")
+        if str_lit.button("実験台になる"):
+            if random.random() < 0.40:
+                str_lit.session_state.player_money += 600
+                str_lit.balloons()
+                str_lit.success("✨ 実験成功！ 600万Gの報酬を獲得！")
             else:
-                str_lit.error("資金が足りません！")
+                loss = int(str_lit.session_state.player_money * 0.5)
+                str_lit.session_state.player_money -= loss
+                str_lit.error(f"💥 実験の副作用で精神を病み、資金が {loss}万G 消失しました...")
+            str_lit.rerun()
 
 # ==========================================
 # TAB 3: レリック図鑑 & ミュージアム
