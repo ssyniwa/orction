@@ -238,24 +238,24 @@ with tab1:
         # 分岐によるエンド判定と画像の表示
         if museum_count >= 5:
             str_lit.balloons()
-            str_lit.success("🏛️ **エンディング：【伝説の館長・ミュージアム支配者】**\n圧倒的な数の至高のレリックを後世に残し、闇社会の文化の父となりました！")
-            str_lit.image("https://picsum.photos/seed/ending_museum/800/400", caption="エンドイラスト：伝説のミュージアム")
+            str_lit.success("🏛️ **エンディング1：【伝説の館長・ミュージアム支配者】**\n圧倒的な数の至高のレリックを後世に残し、闇社会の文化の父となりました！")
+            str_lit.image("images/ending_museum.jpg", caption="エンドイラスト：伝説のミュージアム")
         elif cursed_in_inv >= 2:
-            str_lit.error("☠️ **エンディング：【呪いの亡者】**\n強力な呪物を所持し続けた代償に魂を侵食され、闇の美術館の新たな「展示物」となってしまいました……")
-            str_lit.image("https://picsum.photos/seed/ending_cursed/800/400", caption="エンドイラスト：呪いに呑まれたディーラー")
+            str_lit.error("☠️ **エンディング2：【呪いの亡者】**\n強力な呪物を所持し続けた代償に魂を侵食され、闇の美術館の新たな「展示物」となってしまいました……")
+            str_lit.image("images/ending_cursed.jpg", caption="エンドイラスト：呪いに呑まれたディーラー")
         elif str_lit.session_state.debt >= 500:
-            str_lit.error("💳 **エンディング：【闇金の奴隷】**\n膨れ上がった借金を返済できず、組織の底辺労働者として永遠に働き続けることになりました……")
-            str_lit.image("https://picsum.photos/seed/ending_debt/800/400", caption="エンドイラスト：影に沈む借金生活")
+            str_lit.error("💳 **エンディング3：【闇金の奴隷】**\n膨れ上がった借金を返済できず、組織の底辺労働者として永遠に働き続けることになりました……")
+            str_lit.image("images/ending_debt.jpg", caption="エンドイラスト：影に沈む借金生活")
         elif total_asset >= 5000:
             str_lit.balloons()
-            str_lit.success("🎉 **エンディング：【闇社会のフィクサー】**\n圧倒的な財力と至高のコレクションで全ての権力を掌握しました！")
-            str_lit.image("https://picsum.photos/seed/ending_fixer/800/400", caption="エンドイラスト：夜の街を統べる者")
+            str_lit.success("🎉 **エンディング4：【闇社会のフィクサー】**\n圧倒的な財力と至高のコレクションで全ての権力を掌握しました！")
+            str_lit.image("images/ending_fixer.jpg", caption="エンドイラスト：夜の街を統べる者")
         elif total_asset >= 2500:
-            str_lit.info("🎉 **エンディング：【一流レリックディーラー】**\n確かな目利きと経営手腕で巨万の富を築き上げました。")
-            str_lit.image("https://picsum.photos/seed/ending_dealer/800/400", caption="エンドイラスト：華やかなオークション会場")
+            str_lit.info("🎉 **エンディング5：【一流レリックディーラー】**\n確かな目利きと経営手腕で巨万の富を築き上げました。")
+            str_lit.image("images/ending_dealer.jpg", caption="エンドイラスト：華やかなオークション会場")
         else:
-            str_lit.error("💀 **エンディング：【破産と黄昏】**\n借金と呪いに押しつぶされ、闇の街の底に消えていきました…")
-            str_lit.image("https://picsum.photos/seed/ending_bankruptcy/800/400", caption="エンドイラスト：黄昏の裏路地")
+            str_lit.error("💀 **エンディング6：【破産と黄昏】**\n借金と呪いに押しつぶされ、闇の街の底に消えていきました…")
+            str_lit.image("images/ending_bankruptcy.jpg", caption="エンドイラスト：黄昏の裏路地")
 
     else:
         current_item = str_lit.session_state.daily_catalog[str_lit.session_state.current_item_index]
