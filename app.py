@@ -107,12 +107,21 @@ if "initialized" not in str_lit.session_state:
     # バイト回数制限管理（日ごと）
     str_lit.session_state.part_time_jobs_today = 0
 
+    # 🔽【追加】一度も出品されていないマスターアイテムのプールを作成
+    str_lit.session_state.available_pool = MASTER_ITEMS.copy()
+
     str_lit.session_state.auction_active = False
     str_lit.session_state.current_price = 0
     str_lit.session_state.highest_bidder = "主催者"
     str_lit.session_state.rival_bids = {r["name"]: "パス" for r in RIVALS}
     str_lit.session_state.auction_logs = []
-    str_lit.session_state.daily_catalog = random.sample(MASTER_ITEMS, str_lit.session_state.items_per_day)
+    
+    # 🔽【変更】プールから初日のカタログを抽選（足りない場合はプール全体から）
+    sample_count = min(str_lit.session_state.items_per_day, len(str_lit.session_state.available_pool))
+    str_lit.session_state.daily_catalog = random.sample(str_lit.session_state.available_pool, sample_count)
+    # 選択されたアイテムをプールから除外
+    for item in str_lit.session_state.daily_catalog:
+        str_lit.session_state.available_pool.remove(item)
 
 # ==========================================
 # ロジック関数
@@ -195,7 +204,15 @@ def finalize_auction(winner, price, item):
             str_lit.session_state.game_over = True
         else:
             apply_turn_penalties()
-            str_lit.session_state.daily_catalog = random.sample(MASTER_ITEMS, str_lit.session_state.items_per_day)
+            
+            # 🔽【変更】未出品プールから本日のカタログを抽選（プールが空の場合はマスターからフォールバック）
+            if len(str_lit.session_state.available_pool) > 0:
+                sample_count = min(str_lit.session_state.items_per_day, len(str_lit.session_state.available_pool))
+                str_lit.session_state.daily_catalog = random.sample(str_lit.session_state.available_pool, sample_count)
+                for d_item in str_lit.session_state.daily_catalog:
+                    str_lit.session_state.available_pool.remove(d_item)
+            else:
+                str_lit.session_state.daily_catalog = random.sample(MASTER_ITEMS, str_lit.session_state.items_per_day)
 
 # ==========================================
 # UIサイドバー
