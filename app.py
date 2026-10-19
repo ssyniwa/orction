@@ -59,7 +59,7 @@ str_lit.markdown("""
 """, unsafe_allow_html=True)
 
 # ==========================================
-# マスターデータ定義（15種類の出品アイテム）
+# マスターデータ定義（30種類の出品アイテム）
 # ==========================================
 MASTER_ITEMS = [
     {"id": "item_01", "name": "魔導サイバーコア", "category": "サイバーファンタジー", "apparent_value": 300, "true_value": 800, "is_cursed": False, "image_url": "images/cybercore.jpg", "description": "古代の精霊結晶と量子プロセッサが融合した未知のジェネレータ。"},
@@ -76,7 +76,23 @@ MASTER_ITEMS = [
     {"id": "item_12", "name": "ゴースト・インプラント", "category": "不法サイバーパーツ", "apparent_value": 550, "true_value": 1100, "is_cursed": True, "image_url": "images/ghost_implant.jpg", "description": "人格データを書き換える違法チップ。前の持ち主の意識が残る噂がある。"},
     {"id": "item_13", "name": "タイタンの巨腕ガントレット", "category": "ファンタジー武器", "apparent_value": 650, "true_value": 750, "is_cursed": False, "image_url": "images/titan_gauntlet.jpg", "description": "圧倒的な怪力を得る代わりに、装着者の機動力を奪う重量級防具。"},
     {"id": "item_14", "name": "キメラの遺伝子サンプル", "category": "サイバーファンタジー", "apparent_value": 500, "true_value": 850, "is_cursed": True, "image_url": "images/chimera_dna.jpg", "description": "竜の遺伝子とナマシンセクトを掛け合わせた危険な培養カプセル。"},
-    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "unpurifiable": True, "image_url": "images/twilight_mirror.jpg", "description": "覗き込むと、自分自身の死に様が映し出されるという不吉な手鏡。"}
+    {"id": "item_15", "name": "黄昏の懐中鏡", "category": "呪物", "apparent_value": 300, "true_value": 600, "is_cursed": True, "unpurifiable": True, "image_url": "images/twilight_mirror.jpg", "description": "覗き込むと、自分自身の死に様が映し出されるという不吉な手鏡。"},
+    # --- 🔽 ここから新規追加の15種類 ---
+    {"id": "item_16", "name": "量子結界のオーブ", "category": "サイバーファンタジー", "apparent_value": 500, "true_value": 1100, "is_cursed": False, "image_url": "images/quantum_orb.jpg", "description": "高密度エネルギーを圧縮し、周囲に絶対防御フィールドを展開する球体。"},
+    {"id": "item_17", "name": "オーガの破城槌", "category": "ファンタジー武器", "apparent_value": 450, "true_value": 500, "is_cursed": False, "image_url": "images/ogre_hammer.jpg", "description": "城門すらも一撃で粉砕すると伝えられる、無骨な巨木の大槌。"},
+    {"id": "item_18", "name": "怨念を宿すパペット", "category": "呪物", "apparent_value": 350, "true_value": 900, "is_cursed": True, "unpurifiable": True, "image_url": "images/cursed_puppet.jpg", "description": "夜な夜な勝手に動き出し、不気味な笑い声をあげる不吉な人形。"},
+    {"id": "item_19", "name": "賢者のホログラム書物", "category": "魔法遺物", "apparent_value": 700, "true_value": 1400, "is_cursed": False, "image_url": "images/sage_book.jpg", "description": "失われた古代魔法の全知識が光の投影として記録された魔導書。"},
+    {"id": "item_20", "name": "クラック・インプラントアイ", "category": "不法サイバーパーツ", "apparent_value": 400, "true_value": 850, "is_cursed": True, "image_url": "images/crack_eye.jpg", "description": "視界のすべてがデータ化されるが、視神経を徐々に焼き切る義眼。"},
+    {"id": "item_21", "name": "電脳魔獣の心臓", "category": "サイバー遺物", "apparent_value": 900, "true_value": 1800, "is_cursed": False, "image_url": "images/cyber_heart.jpg", "description": "メカと生体組織が複雑に絡み合い、今なお脈動を続ける巨大なコア。"},
+    {"id": "item_22", "name": "月光のシルクローブ", "category": "魔法遺物", "apparent_value": 300, "true_value": 600, "is_cursed": False, "image_url": "images/moon_robe.jpg", "description": "月の光を浴びることで、着用者の気配を完全に遮断する神秘の布衣。"},
+    {"id": "item_23", "name": "血塗られた処刑人の斧", "category": "ファンタジー武器", "apparent_value": 550, "true_value": 800, "is_cursed": True, "image_url": "images/executioner_axe.jpg", "description": "数多の罪人の血を吸い、持つ者に血の渇望を引き起こす戦斧。"},
+    {"id": "item_24", "name": "ガイアの生体プラグ", "category": "サイバーファンタジー", "apparent_value": 600, "true_value": 1250, "is_cursed": False, "image_url": "images/gaia_plug.jpg", "description": "プラネットネットワークと直接同調し、環境エネルギーを直接引き出す。"},
+    {"id": "item_25", "name": "ファントム・ドライヴ", "category": "サイバー遺物", "apparent_value": 750, "true_value": 1600, "is_cursed": False, "image_url": "images/phantom_drive.jpg", "description": "存在そのものを一時的にデータ化し、あらゆる物理障害をすり抜ける基盤。"},
+    {"id": "item_26", "name": "黄泉還りの香炉", "category": "呪物", "apparent_value": 400, "true_value": 1000, "is_cursed": True, "unpurifiable": True, "image_url": "images/yomi_censer.jpg", "description": "焚きしめると死者の幻影を呼び寄せる、狂気と神秘の香炉。"},
+    {"id": "item_27", "name": "ミスリル合金のバックラー", "category": "ファンタジー武器", "apparent_value": 500, "true_value": 700, "is_cursed": False, "image_url": "images/mithril_buckler.jpg", "description": "極めて軽量かつ高い硬度を誇る、エルフ族秘伝の小型盾。"},
+    {"id": "item_28", "name": "暴走する自律型ドローン", "category": "不法サイバーパーツ", "apparent_value": 350, "true_value": 600, "is_cursed": True, "image_url": "images/rogue_drone.jpg", "description": "ハッキングによって制御を失い、周囲の動くものに銃口を向け続ける機体。"},
+    {"id": "item_29", "name": "星図の刻まれたアストロラーベ", "category": "魔法遺物", "apparent_value": 650, "true_value": 1300, "is_cursed": False, "image_url": "images/astrolabe.jpg", "description": "宇宙の真理と未来の天体配置を正確無比に指し示す魔導天体儀。"},
+    {"id": "item_30", "name": "パンドラのブラックボックス", "category": "呪物", "apparent_value": 1000, "true_value": 2500, "is_cursed": True, "unpurifiable": True, "image_url": "images/pandora_box.jpg", "description": "いかなる解析も受け付けない、開けた者に破滅か無限の富をもたらす謎の箱。"}
 ]
 
 
@@ -95,7 +111,7 @@ if "initialized" not in str_lit.session_state:
     str_lit.session_state.debt = 0             # 借金（万G）
     str_lit.session_state.appraisal_tickets = 3  # 初期鑑定チケット
     str_lit.session_state.day = 1
-    str_lit.session_state.max_days = 5
+    str_lit.session_state.max_days = 10  # 5日から10日に変更する場合
     str_lit.session_state.items_per_day = 3
     str_lit.session_state.current_item_index = 0
     str_lit.session_state.inventory = []  # 所持アイテム
@@ -550,7 +566,7 @@ with tab3:
                 str_lit.caption(f"真価評価: {m_item['true_value']}万G (展示中)")
 
     str_lit.markdown("---")
-    str_lit.subheader("📖 レリック・コレクション全集（全15種コンプリート状況）")
+    str_lit.subheader(f"📖 レリック・コレクション全集（全{len(MASTER_ITEMS)}種コンプリート状況）")
     str_lit.write("※一度でもオークションで落札・獲得したアイテムは、売却しても図鑑に記録され続けます。")
     cols = str_lit.columns(3)
     
