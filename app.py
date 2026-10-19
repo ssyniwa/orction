@@ -363,7 +363,7 @@ with tab1:
 
             with col_left:
                 str_lit.image(current_item["image_url"], use_container_width=True)
-                str_lit.metric("現在最高価格", f"{str_lit.session_state.current_price} 万G", f"最高入札者: {str_lit.session_state.highest_bidder}")
+                
 
             with col_right:
                 str_lit.markdown("##### 📜 オークション実況ログ")
