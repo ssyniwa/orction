@@ -111,7 +111,7 @@ if "initialized" not in str_lit.session_state:
     str_lit.session_state.debt = 0             # 借金（万G）
     str_lit.session_state.appraisal_tickets = 3  # 初期鑑定チケット
     str_lit.session_state.day = 1
-    str_lit.session_state.max_days = 10  # 5日から10日に変更する場合
+    str_lit.session_state.max_days = 5  
     str_lit.session_state.items_per_day = 3
     str_lit.session_state.current_item_index = 0
     str_lit.session_state.inventory = []  # 所持アイテム
