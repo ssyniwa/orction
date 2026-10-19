@@ -130,7 +130,6 @@ def apply_turn_penalties():
         str_lit.session_state.debt += interest
         str_lit.session_state.auction_logs.append(f"💳【闇金からの取り立て】借金の利息が発生しました (+{interest}万G)。残高: {str_lit.session_state.debt}万G")
 
-    # 日が変わったらバイト回数をリセット
     str_lit.session_state.part_time_jobs_today = 0
 
 def start_next_item_auction():
@@ -183,7 +182,6 @@ def finalize_auction(winner, price, item):
         str_lit.session_state.player_money -= price
         item_copy = item.copy()
         str_lit.session_state.inventory.append(item_copy)
-        # コレクション図鑑用に永久保存登録
         str_lit.session_state.unlocked_collection.add(item["id"])
         str_lit.toast(f"🎉 {item['name']} を {price}万G で落札しました！", icon="🎉")
     else:
@@ -231,15 +229,33 @@ with tab1:
         museum_value = sum(i["true_value"] * 1.5 for i in str_lit.session_state.museum)
         total_asset = int(str_lit.session_state.player_money + inv_value + museum_value - str_lit.session_state.debt)
         
+        # 特殊エンド判定
+        museum_count = len(str_lit.session_state.museum)
+        cursed_in_inv = sum(1 for i in str_lit.session_state.inventory if i.get("is_cursed", False))
+        
         str_lit.subheader(f"最終評価総資産（借金返済後）: {total_asset} 万G")
 
-        if total_asset >= 5000:
+        # 分岐によるエンド判定と画像の表示
+        if museum_count >= 5:
             str_lit.balloons()
-            str_lit.success("🎉 **エンディング：闇社会のフィクサー**\n圧倒的な財力と至高のコレクションで全ての権力を掌握しました！")
+            str_lit.success("🏛️ **エンディング：【伝説の館長・ミュージアム支配者】**\n圧倒的な数の至高のレリックを後世に残し、闇社会の文化の父となりました！")
+            str_lit.image("https://picsum.photos/seed/ending_museum/800/400", caption="エンドイラスト：伝説のミュージアム")
+        elif cursed_in_inv >= 2:
+            str_lit.error("☠️ **エンディング：【呪いの亡者】**\n強力な呪物を所持し続けた代償に魂を侵食され、闇の美術館の新たな「展示物」となってしまいました……")
+            str_lit.image("https://picsum.photos/seed/ending_cursed/800/400", caption="エンドイラスト：呪いに呑まれたディーラー")
+        elif str_lit.session_state.debt >= 500:
+            str_lit.error("💳 **エンディング：【闇金の奴隷】**\n膨れ上がった借金を返済できず、組織の底辺労働者として永遠に働き続けることになりました……")
+            str_lit.image("https://picsum.photos/seed/ending_debt/800/400", caption="エンドイラスト：影に沈む借金生活")
+        elif total_asset >= 5000:
+            str_lit.balloons()
+            str_lit.success("🎉 **エンディング：【闇社会のフィクサー】**\n圧倒的な財力と至高のコレクションで全ての権力を掌握しました！")
+            str_lit.image("https://picsum.photos/seed/ending_fixer/800/400", caption="エンドイラスト：夜の街を統べる者")
         elif total_asset >= 2500:
-            str_lit.info("🎉 **エンディング：一流レリックディーラー**\n確かな目利きと経営手腕で巨万の富を築き上げました。")
+            str_lit.info("🎉 **エンディング：【一流レリックディーラー】**\n確かな目利きと経営手腕で巨万の富を築き上げました。")
+            str_lit.image("https://picsum.photos/seed/ending_dealer/800/400", caption="エンドイラスト：華やかなオークション会場")
         else:
-            str_lit.error("💀 **エンディング：破産と黄昏**\n借金と呪いに押しつぶされ、闇の街の底に消えていきました…")
+            str_lit.error("💀 **エンディング：【破産と黄昏】**\n借金と呪いに押しつぶされ、闇の街の底に消えていきました…")
+            str_lit.image("https://picsum.photos/seed/ending_bankruptcy/800/400", caption="エンドイラスト：黄昏の裏路地")
 
     else:
         current_item = str_lit.session_state.daily_catalog[str_lit.session_state.current_item_index]
@@ -281,7 +297,6 @@ with tab1:
         else:
             str_lit.subheader(f"🔨 競売中：{current_item['name']}")
             
-            # 参加者ステータス表示エリア（プレイヤー ＋ ライバル3人）
             str_lit.markdown("#### 👥 参加者リアルタイム状況")
             p_col, r1_col, r2_col, r3_col = str_lit.columns(4)
 
@@ -362,7 +377,7 @@ with tab1:
                         str_lit.rerun()
 
 # ==========================================
-# TAB 2: 所持品 & 闇市（資金調達・借金返済）
+# TAB 2: 所持品 & 闇市（資金調達・返済）
 # ==========================================
 with tab2:
     str_lit.subheader("💼 あなたの所持アイテム（出口戦略 & 解呪判定）")
@@ -522,7 +537,6 @@ with tab3:
     str_lit.write("※一度でもオークションで落札・獲得したアイテムは、売却しても図鑑に記録され続けます。")
     cols = str_lit.columns(3)
     
-    # 永続管理されている unlocked_collection を参照
     unlocked_ids = str_lit.session_state.unlocked_collection
 
     for idx, item in enumerate(MASTER_ITEMS):
